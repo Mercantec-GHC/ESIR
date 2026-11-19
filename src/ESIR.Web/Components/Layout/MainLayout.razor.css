@@ -1,0 +1,32 @@
+.page {
+    font-family: system-ui, sans-serif;
+    color: #24252B;
+}
+
+.site-header {
+    border-bottom: 1px solid #E0D3C1;
+    padding: 12px 24px;
+}
+
+nav {
+    display: flex;
+    gap: 16px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+nav ::deep a {
+    color: #2C6554;
+    text-decoration: none;
+}
+
+nav ::deep a.active {
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px;
+}

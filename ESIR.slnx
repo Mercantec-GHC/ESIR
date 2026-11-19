@@ -1,9 +1,17 @@
-﻿<Solution>
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path=".gitignore" />
+    <File Path="compose.yaml" />
+    <File Path="Dockerfile" />
+    <File Path="README.md" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/ESIR.Web/ESIR.Web.csproj" />
   </Folder>
-  <Folder Name="/src/firmware/">
+  <Folder Name="/firmware/">
     <File Path="firmware/ESIR_NetworkStarter/ESIR_NetworkStarter.ino" />
+    <File Path="firmware/ESIR_NetworkStarter/arduino_secrets.example.h" />
   </Folder>
   <Folder Name="/test/">
     <File Path="test/.gitkeep" />

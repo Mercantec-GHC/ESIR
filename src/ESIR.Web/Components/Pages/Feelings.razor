@@ -1,1 +1,18 @@
-﻿
+@page "/feelings"
+@rendermode InteractiveServer
+
+<PageTitle>How do you feel? – ESIR</PageTitle>
+
+<h1>How do you feel?</h1>
+
+<div class="emotions">
+    @foreach (var emotion in RobotStore.Emotions)
+    {
+        <button type="button" class="emotion" @onclick="() => Send(emotion)">@Label(emotion)</button>
+    }
+</div>
+
+@if (lastCommand is not null)
+{
+    <p class="status" role="status">@Label(lastCommand.Emotion): @StatusText(lastCommand.Status)</p>
+}

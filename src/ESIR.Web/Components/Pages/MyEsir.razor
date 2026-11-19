@@ -1,0 +1,23 @@
+@page "/my-esir"
+@rendermode InteractiveServer
+
+<PageTitle>My ESIR – ESIR</PageTitle>
+
+<h1>My ESIR</h1>
+
+<p class="robot-status" role="status">
+    <strong>@(snapshot.Connected ? "Online" : "Offline")</strong>
+    @if (snapshot.LastSeen is { } seen)
+    {
+        <span> · last contact @seen.ToString("HH:mm:ss") UTC</span>
+    }
+</p>
+
+@if (snapshot.LastCommand is { } command)
+{
+    <p>Last command: @command.Emotion (@command.Status.ToString().ToLowerInvariant())</p>
+}
+else
+{
+    <p>No commands sent yet. Pick a feeling on the <a href="feelings">Feelings</a> page.</p>
+}

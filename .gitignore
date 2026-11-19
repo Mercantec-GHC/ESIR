@@ -1,3 +1,22 @@
-﻿bin/
+# Build output
+bin/
 obj/
+publish/
+
+# IDEs
 .vs/
+.idea/
+*.user
+*.suo
+
+# Secrets and local settings
+.env
+appsettings.*.local.json
+firmware/**/arduino_secrets.h
+
+# Arduino / PlatformIO build output
+.pio/
+
+# OS files
+.DS_Store
+Thumbs.db

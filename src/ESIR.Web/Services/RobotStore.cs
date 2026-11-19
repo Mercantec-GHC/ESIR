@@ -21,7 +21,7 @@ public sealed record RobotSnapshot(
 public sealed class RobotStore(TimeProvider clock)
 {
     public static readonly string[] Emotions =
-        ["neutral", "happy", "sad", "excited", "calm", "sleepy", "surprised", "confused"];
+        ["happy", "sad", "stressed", "angry", "tired", "bored"];
 
     private static readonly TimeSpan OfflineAfter = TimeSpan.FromSeconds(15);
     private static readonly TimeSpan CommandLifetime = TimeSpan.FromSeconds(60);

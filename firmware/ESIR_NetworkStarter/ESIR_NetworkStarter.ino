@@ -1,20 +1,17 @@
-﻿// ESIR network starter (Arduino MKR WiFi 1010)
+// ESIR network starter (Arduino MKR WiFi 1010)
 // Polls the ESIR website for the next command and reports each step back.
 // NOT yet tested on real hardware. Libraries (Library Manager): WiFiNINA, ArduinoHttpClient, ArduinoJson (v7).
+// Before uploading: copy arduino_secrets.example.h to arduino_secrets.h and fill it in.
 
 #include <WiFiNINA.h>
 #include <ArduinoHttpClient.h>
 #include <ArduinoJson.h>
-
-// ---- Fill these in ----
-const char WIFI_SSID[] = "YOUR_WIFI_NAME";
-const char WIFI_PASS[] = "YOUR_WIFI_PASSWORD";
-const char SERVER_HOST[] = "192.168.1.50";  // LAN IP of the computer running the website
-const int  SERVER_PORT = 5080;
-// -----------------------
+#include "arduino_secrets.h"
 
 WiFiClient wifi;
-HttpClient http(wifi, SERVER_HOST, SERVER_PORT);
+HttpClient http(wifi, SECRET_SERVER_HOST, SECRET_SERVER_PORT);
+
+const String API_BASE = String("/api/v1/devices/") + SECRET_DEVICE_ID;
 
 String lastHandledId = "";   // dedup: never run the same command twice
 unsigned long lastPoll = 0;
@@ -23,7 +20,7 @@ const unsigned long POLL_EVERY_MS = 2000;
 void connectWifi() {
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print("Connecting to Wi-Fi... ");
-    WiFi.begin(WIFI_SSID, WIFI_PASS);
+    WiFi.begin(SECRET_WIFI_SSID, SECRET_WIFI_PASS);
     delay(5000);
   }
   Serial.println("connected");
@@ -31,21 +28,32 @@ void connectWifi() {
 
 void reportStatus(const String& id, const char* status) {
   String body = "{\"commandId\":\"" + id + "\",\"status\":\"" + status + "\"}";
-  http.post("/api/device/status", "application/json", body);
+  http.beginRequest();
+  http.post(API_BASE + "/status");
+  http.sendHeader("Content-Type", "application/json");
+  http.sendHeader("Content-Length", body.length());
+  http.sendHeader("X-Device-Key", SECRET_DEVICE_KEY);
+  http.beginBody();
+  http.print(body);
+  http.endRequest();
   http.responseStatusCode();
   http.responseBody();  // drain
 }
 
-// TODO: draw the face / LEDs here (Oplà display + RGB LEDs).
+// TODO: draw the face / LEDs here (Opla display + RGB LEDs).
 void showEmotion(const String& emotion) {
   Serial.print("Show emotion: ");
   Serial.println(emotion);
 }
 
 void pollOnce() {
-  http.get("/api/device/commands/next");
+  http.beginRequest();
+  http.get(API_BASE + "/commands/next");
+  http.sendHeader("X-Device-Key", SECRET_DEVICE_KEY);
+  http.endRequest();
   int code = http.responseStatusCode();
   String body = http.responseBody();
+  if (code == 401) { Serial.println("Server rejected the device key"); return; }
   if (code != 200) return;  // 204 = nothing waiting
 
   JsonDocument doc;

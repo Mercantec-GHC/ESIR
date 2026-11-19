@@ -1,5 +1,16 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 
-<main style="max-width: 720px; margin: 0 auto; padding: 24px; font-family: system-ui, sans-serif; color: #24252B">
-    @Body
-</main>
+<div class="page">
+    <header class="site-header">
+        <nav>
+            <NavLink href="" Match="NavLinkMatch.All">Home</NavLink>
+            <NavLink href="feelings">Feelings</NavLink>
+            <NavLink href="my-esir">My ESIR</NavLink>
+            <NavLink href="about-us">About us</NavLink>
+        </nav>
+    </header>
+
+    <main>
+        @Body
+    </main>
+</div>

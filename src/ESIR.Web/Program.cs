@@ -1,5 +1,6 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
+using ESIR.Web.Api;
 using ESIR.Web.Components;
 using ESIR.Web.Services;
 
@@ -14,27 +15,14 @@ builder.Services.ConfigureHttpJsonOptions(o =>
 var app = builder.Build();
 
 app.UseAntiforgery();
+app.MapStaticAssets();
 
-// ---- API: website side ----
-var robot = app.MapGroup("/api/robot");
-robot.MapGet("/state", (RobotStore store) => store.GetSnapshot());
-robot.MapPost("/emotion", (EmotionRequest req, RobotStore store) =>
-    store.Enqueue(req.Emotion ?? "") is { } cmd
-        ? Results.Ok(cmd)
-        : Results.ValidationProblem(new Dictionary<string, string[]>
-          { ["emotion"] = [$"Unknown emotion. Use one of: {string.Join(", ", RobotStore.Emotions)}"] }));
+// Health check for Docker and Dokploy
+app.MapGet("/healthz", () => Results.Text("ok"));
 
-// ---- API: Arduino side (polling) ----
-var device = app.MapGroup("/api/device");
-device.MapGet("/commands/next", (RobotStore store) =>
-    store.NextForDevice() is { } cmd ? Results.Ok(cmd) : Results.NoContent());
-device.MapPost("/status", (StatusReport report, RobotStore store) =>
-    store.Report(report.CommandId, report.Status) ? Results.NoContent() : Results.NotFound());
+// Endpoints the Arduino calls (the website pages use RobotStore directly)
+app.MapDeviceApi();
 
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
 app.Run();
-
-record EmotionRequest(string? Emotion);
-record StatusReport(Guid CommandId, CommandStatus Status);
-

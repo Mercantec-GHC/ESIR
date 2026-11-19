@@ -1,0 +1,10 @@
+**/bin/
+**/obj/
+.vs/
+.git/
+.idea/
+docs/
+firmware/
+test/
+tools/
+.env

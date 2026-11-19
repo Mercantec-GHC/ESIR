@@ -61,7 +61,7 @@ ESIR is a companion, not a therapist or an emergency service. It does not record
 | Robot hardware | Arduino MKR WiFi 1010 + Arduino Opla (MKR IoT Carrier) |
 | Firmware | Arduino C++ with PlatformIO |
 | Robot ↔ server | HTTPS + JSON, the robot polls the server |
-| Body | 3D-printed shell |
+| Body | 3D-printed shell (CAD) |
 | Hosting | Docker, deployed with Dokploy (planned) |
 | Planning | GitHub Projects and Issues |
 
