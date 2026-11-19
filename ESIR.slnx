@@ -1,0 +1,11 @@
+﻿<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ESIR.Web/ESIR.Web.csproj" />
+  </Folder>
+  <Folder Name="/src/firmware/">
+    <File Path="firmware/ESIR_NetworkStarter/ESIR_NetworkStarter.ino" />
+  </Folder>
+  <Folder Name="/test/">
+    <File Path="test/.gitkeep" />
+  </Folder>
+</Solution>
