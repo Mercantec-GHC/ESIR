@@ -62,7 +62,7 @@ ESIR is a companion, not a therapist or an emergency service. It does not record
 | Firmware | Arduino C++ with PlatformIO |
 | Robot ↔ server | HTTPS + JSON, the robot polls the server |
 | Body | 3D-printed shell (CAD) |
-| Hosting | Docker, deployed with Dokploy (planned) |
+| Hosting | Docker Compose on Dokploy behind Cloudflare and Traefik |
 | Planning | GitHub Projects and Issues |
 
 ## How it works
@@ -175,19 +175,17 @@ pio device monitor
 
 ## Deployment
 
-Deployment with Docker and Dokploy comes later in the project. The plan:
+Dokploy deploys `./compose.yaml` from `develop` as a Docker Compose service. Set `ESIR_HOST=esir.mercantec.tech` in the Dokploy environment. Cloudflare serves HTTPS and forwards requests to Traefik, which routes them to `esir-web` on port 8080. Check `https://esir.mercantec.tech/healthz` after deployment.
 
-- A multi-stage `Dockerfile` (.NET 10 SDK to build, ASP.NET Core runtime to run), running as a non-root user on port 8080
-- A Dokploy application connected to this GitHub repository, deploying automatically on every push to `main`
-- Secrets set as environment variables in Dokploy, HTTPS through Dokploy's domain settings
-- One replica only, because Blazor Server keeps each user's page state in memory
+Set `ESIR_DEVICE_KEY` in Dokploy when connecting the physical robot. Device requests are rejected while the key is empty. The device ID defaults to `esir-01` and can be set with `ESIR_DEVICE_ID`. Keep a single replica because Blazor Server and the robot command queue use in-memory state.
 
-Build and run the container locally:
+Run the container locally with Docker Compose. The local override publishes port 5080 and provides a development-only device key.
 
 ```bash
-docker build -t esir-web .
-docker run -p 8080:8080 -e Devices__0__Id=esir-01 -e Devices__0__Key=dev-key esir-web
+docker compose up --build
 ```
+
+Open `http://localhost:5080`.
 
 ## Way of working
 
