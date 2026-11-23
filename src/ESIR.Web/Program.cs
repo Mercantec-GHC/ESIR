@@ -1,7 +1,9 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using ESIR.Web.Components;
+using ESIR.Web.Data;
 using ESIR.Web.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +12,18 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton<RobotStore>();
+builder.Services.AddDbContext<EsirDbContext>(o =>
+	o.UseNpgsql(builder.Configuration.GetConnectionString("Default"),
+		npgsql => npgsql.EnableRetryOnFailure()));
 builder.Services.ConfigureHttpJsonOptions(o =>
     o.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)));
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+	scope.ServiceProvider.GetRequiredService<EsirDbContext>().Database.Migrate();
+}
 
 app.UseAntiforgery();
 
