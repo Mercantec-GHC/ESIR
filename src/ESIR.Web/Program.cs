@@ -12,6 +12,10 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton<RobotStore>();
+var connectionString = builder.Configuration.GetConnectionString("Default");
+if (string.IsNullOrWhiteSpace(connectionString))
+	throw new InvalidOperationException(
+		"ConnectionStrings:Default is not set. Locally: set it with dotnet user-secrets (see README). In Docker: set POSTGRES_PASSWORD in .env.");
 builder.Services.AddDbContext<EsirDbContext>(o =>
 	o.UseNpgsql(builder.Configuration.GetConnectionString("Default"),
 		npgsql => npgsql.EnableRetryOnFailure()));

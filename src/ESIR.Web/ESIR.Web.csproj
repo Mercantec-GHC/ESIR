@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <!-- Docker restores packages before copying the Razor components. -->
     <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
+    <UserSecretsId>02dd507f-17b0-479a-8341-211daa8651a0</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
