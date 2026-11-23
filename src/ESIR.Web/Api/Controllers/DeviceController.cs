@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using ESIR.Web.Api.Filters;
 using ESIR.Web.Dtos;
 using ESIR.Web.Models;
 using ESIR.Web.Services;
@@ -9,10 +8,8 @@ namespace ESIR.Web.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class DeviceController(RobotStore store, IConfiguration configuration) : ControllerBase
+public class DeviceController(RobotStore store) : ControllerBase
 {
-	public const string KeyHeader = "X-Device-Key";
-
 	// Temporary in-memory data. Replace with a database/service lookup later.
 	private static readonly DeviceViewModel[] Devices =
 	[
@@ -53,50 +50,20 @@ public class DeviceController(RobotStore store, IConfiguration configuration) : 
 	// The robot asks for its next command. Also counts as a heartbeat.
 	// GET api/v1/devices/{deviceId}/commands/next
 	[HttpGet("/api/v1/devices/{deviceId}/commands/next")]
+	[RequireDeviceKey]
 	public IActionResult GetNextCommand(string deviceId)
 	{
-		if (ValidateDeviceKey(deviceId) is { } failure)
-		{
-			return failure;
-		}
-
 		return store.NextForDevice() is { } cmd ? Ok(cmd) : NoContent();
 	}
 
 	// The robot reports a step for a command: accepted, running, completed.
 	// POST api/v1/devices/{deviceId}/status
 	[HttpPost("/api/v1/devices/{deviceId}/status")]
+	[RequireDeviceKey]
 	public IActionResult ReportStatus(string deviceId, [FromBody] StatusReport report)
 	{
-		if (ValidateDeviceKey(deviceId) is { } failure)
-		{
-			return failure;
-		}
-
 		return store.Report(report.CommandId, report.Status) ? NoContent() : NotFound();
 	}
-
-	/// <summary>Validates the X-Device-Key header for the given device. Returns null when the request is authorized.</summary>
-	private IActionResult? ValidateDeviceKey(string deviceId)
-	{
-		var devices = configuration.GetSection("Devices").Get<DeviceOptions[]>() ?? [];
-		var device = devices.FirstOrDefault(d => d.Id == deviceId);
-		if (device is null)
-		{
-			return NotFound();
-		}
-
-		var sentKey = Request.Headers[KeyHeader].ToString();
-		if (string.IsNullOrEmpty(device.Key) || !KeysMatch(sentKey, device.Key))
-		{
-			return Unauthorized();
-		}
-
-		return null;
-	}
-
-	private static bool KeysMatch(string sent, string expected) =>
-		CryptographicOperations.FixedTimeEquals(Encoding.UTF8.GetBytes(sent), Encoding.UTF8.GetBytes(expected));
 }
 
 public sealed record StatusReport(Guid CommandId, CommandStatus Status);
