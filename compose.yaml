@@ -4,6 +4,10 @@ services:
     environment:
       Devices__0__Id: ${ESIR_DEVICE_ID:-esir-01}
       Devices__0__Key: ${ESIR_DEVICE_KEY:-}
+      ConnectionStrings__Default: Host=db;Port=5432;Database=esir;Username=esir;Password=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
     labels:
       traefik.enable: "true"
       traefik.docker.network: dokploy-network
@@ -13,8 +17,30 @@ services:
       traefik.http.services.mercantec-esir.loadbalancer.server.port: "8080"
     networks:
       - dokploy-network
+      - internal
     restart: unless-stopped
+
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: esir
+      POSTGRES_USER: esir
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - esir-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U esir -d esir"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - internal
+    restart: unless-stopped
+
+volumes:
+  esir-db-data:
 
 networks:
   dokploy-network:
     external: true
+  internal:

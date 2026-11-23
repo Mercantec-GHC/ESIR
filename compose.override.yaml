@@ -5,4 +5,9 @@ services:
     environment:
       Devices__0__Key: ${ESIR_DEVICE_KEY:-dev-key-change-me}
     labels: !reset {}
-    networks: !reset []
+    networks: !override
+      - internal
+
+  db:
+    ports:
+      - "5433:5432"
