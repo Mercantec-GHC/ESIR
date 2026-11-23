@@ -1,7 +1,194 @@
-@page "/about-us"
+@page "/"
 
-<PageTitle>About us – ESIR</PageTitle>
+<PageTitle>ESIR – Your little companion</PageTitle>
 
-<h1>About us</h1>
-<p>ESIR Robotics is a student project at Mercantec by Patricia, Victoria and Yuliia.</p>
-<p>ESIR is a companion, not a therapist or an emergency service. It stores no conversations and no personal data.</p>
+<section class="hero bleed">
+    <div class="container hero-inner">
+        <div class="hero-text">
+            <p class="hello">Hi, I'm ESIR!</p>
+            <h1>Your little companion, always by your side.</h1>
+            <p class="lead">
+                I'm a small desk robot with a friendly face. Tell me how you feel and I'll answer with
+                a kind word and a smile. If everything feels too fast, we can breathe slowly together.
+            </p>
+            <p class="actions">
+                <a class="btn" href="relax">Tell me how you feel</a>
+            </p>
+        </div>
+        <div class="hero-face">
+            <RobotFace Mood="happy" Size="21px" />
+            <p class="hint">Psst, click my face!</p>
+        </div>
+    </div>
+</section>
+
+<nav class="jump" aria-label="On this page">
+    <span>On this page:</span>
+    <a href="#reactions">How I react</a>
+    <a href="#feelings">Six feelings</a>
+    <a href="#inside">Inside the robot</a>
+    <a href="#body">The body</a>
+    <a href="#safe">Safe by design</a>
+    <a href="#questions">Questions</a>
+</nav>
+
+<section>
+    <h2>What ESIR is</h2>
+    <p>
+        ESIR stands for <strong>Emotional Supportive Interactive Robot</strong>. It is a small companion for your desk,
+        for people who would like some company, someone to be there with a feeling, or a little help to slow down
+        in a hard moment. You touch it, tilt it, shake it gently or pick it up, and it answers with an animated face
+        and coloured light. Next to the robot there is this website, where you can tell ESIR how you feel and try
+        exercises that help you relax.
+    </p>
+    <p>ESIR is for adults and young people, not only for students. It is not made for children.</p>
+    <p class="stage">
+        <strong>Where we are:</strong> ESIR is a student project at Mercantec, at the concept stage. The website works today.
+        Everything about the robot on this page is planned, and the robot is not built yet.
+    </p>
+</section>
+
+<section>
+    <h2>A moment with ESIR</h2>
+    <ol class="steps">
+        @foreach (var step in _day)
+        {
+            <li class="step">
+                <RobotFace Mood="@step.Mood" Size="5px" />
+                <h3>@step.Title</h3>
+                <p>@step.Text</p>
+            </li>
+        }
+    </ol>
+</section>
+
+<section id="reactions">
+    <h2>How ESIR reacts to you</h2>
+    <p>ESIR has touch pads and a motion sensor. This is what each action should do. We have not tuned any of it on the real robot yet.</p>
+    <div class="reactions">
+        @foreach (var r in _reactions)
+        {
+            <article class="reaction">
+                <RobotFace Mood="@r.Mood" Size="4.5px" />
+                <h3>@r.Trigger</h3>
+                <p>@r.What</p>
+                <p class="sensor">@r.Sensor</p>
+            </article>
+        }
+    </div>
+</section>
+
+<section id="feelings">
+    <h2>Six feelings, two answers</h2>
+    <p>
+        When you pick a feeling, ESIR answers twice: on the robot and on the website. Today the website shows ESIR's face
+        and a kind message. The rest of the website answers, and everything on the robot, are still being built.
+    </p>
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr><th scope="col">Feeling</th><th scope="col">On the robot (planned)</th><th scope="col">On the website</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var row in _feelings)
+                {
+                    <tr><th scope="row">@row.Feeling</th><td>@row.Robot</td><td>@row.Website</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section id="inside">
+    <h2>Inside the robot</h2>
+    <div class="facts">
+        <div><h3>The brain</h3><p>An Arduino MKR WiFi 1010, a small board with Wi-Fi. It runs our program, written in Arduino C++.</p></div>
+        <div><h3>The carrier</h3><p>An Arduino Opla IoT Carrier sits on the board. It brings the touch pads, a motion sensor, a round display and RGB lights.</p></div>
+        <div><h3>The program</h3><p>Four parts: input, behaviour, drawing the face, and the network. It never waits, so ESIR always stays responsive.</p></div>
+        <div><h3>The power</h3><p>Steady USB power. If power is low, ESIR goes into a safe low-power mode, and after a restart it starts quietly with no lights or sounds.</p></div>
+    </div>
+    <h3 class="states-title">ESIR is always in one of five states</h3>
+    <ul class="states">
+        @foreach (var s in _states)
+        {
+            <li>@s</li>
+        }
+    </ul>
+</section>
+
+<section id="body">
+    <h2>The body</h2>
+    <p>The board sits inside a 3D-printed shell that we design in CAD. Both ideas below are concepts, and the fit still has to be checked.</p>
+    <div class="two">
+        <div class="box box--now">
+            <h3>Version 1: a fixed disc</h3>
+            <ul>
+                <li>A flat disc shell, with the board between two halves.</li>
+                <li>A window for the display.</li>
+                <li>Open touch pads, so you can reach them.</li>
+                <li>USB access and a removable back.</li>
+            </ul>
+        </div>
+        <div class="box box--soon">
+            <h3>Version 3 idea: a body that moves</h3>
+            <ul>
+                <li>A head and arms moved by small motors (servos), on the same board mount.</li>
+                <li>We would start with one head movement only.</li>
+                <li>This only happens if there is time.</li>
+            </ul>
+        </div>
+    </div>
+    <figure class="concepts">
+        <img src="images/esir-concepts.jpg" alt="Four ESIR enclosure concepts: a mint cat, a classic blue robot, a peach box and a lilac pebble." loading="lazy" />
+        <figcaption>Four shell concepts to choose from: a mint cat, a classic robot, a peach box and a lilac pebble. Board size, touch openings and fit still need to be checked.</figcaption>
+    </figure>
+</section>
+
+<section id="safe">
+    <h2>Safe by design</h2>
+    <ul class="plain">
+        <li><strong>Stop always wins.</strong> It cancels whatever ESIR is doing and returns it to quiet rest. You can stop it with a touch pad or from the website.</li>
+        <li><strong>Limits on lights and sound,</strong> with a way to switch them off.</li>
+        <li><strong>No surprises after a restart.</strong> ESIR starts with no lights or sounds on.</li>
+        <li><strong>Old commands are ignored.</strong> Every command has an ID, so a repeated or outdated command is skipped.</li>
+        <li><strong>It should keep working without Wi-Fi,</strong> and the website only shows what the robot has confirmed.</li>
+        <li><strong>No recordings and no personal data.</strong> You can't talk to ESIR directly yet. A microphone is only a later idea, and only after privacy checks.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>What works today, and what comes later</h2>
+    <div class="two">
+        <div class="box box--now">
+            <h3>On the website today</h3>
+            <ul>
+                <li>On the Relax page you pick one of the six feelings. ESIR answers with a face and a kind message, and the feeling is queued for the robot.</li>
+                <li>The same page has three breathing rhythms, a 5-4-3-2-1 grounding exercise and a body release exercise.</li>
+                <li>A status line shows whether the robot is online.</li>
+            </ul>
+        </div>
+        <div class="box box--soon">
+            <h3>Ideas for later versions</h3>
+            <ul>
+                <li><strong>Version 2:</strong> a name, eye colour and brightness you can choose, finer gestures, and testing both versions of the Opla carrier.</li>
+                <li><strong>Version 3:</strong> a moving head, a microphone after privacy checks, voice replies through a laptop, more sensors and games, and ESIRs you can customise.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2>How the robot and the website talk</h2>
+    <ol class="flow">
+        <li>You pick a feeling on the website. The website puts a command for the robot in a waiting line on the server.</li>
+        <li>About once a second the robot asks the server: "Is there something for me?" The server never calls the robot.</li>
+        <li>The robot shows the matching reaction and tells the server each step, with the command ID and the status: received, running, completed.</li>
+        <li>The website shows only what the robot has confirmed. If the robot is offline, the command waits for a short while and then expires.</li>
+    </ol>
+    <p>There is no database in the first version. Commands and robot status live in memory, and nothing personal is stored.</p>
+    <div class="facts">
+        <div><h3>The website</h3><p>ASP.NET Core on .NET 10 with Blazor Server, and a small API that the robot talks to over Wi-Fi.</p></div>
+        <div><h3>The firmware</h3><p>Arduino C++, built with PlatformIO.</p></div>
+        <div><h3>The tools</h3><p>GitHub for tasks and code, Microsoft Teams for talking, and CAD for the body. Hosting with Docker is planned.</p></div>
+    </div>
+</section>

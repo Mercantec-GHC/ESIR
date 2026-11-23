@@ -1,0 +1,127 @@
+@page "/progress"
+
+<PageTitle>Progress – ESIR</PageTitle>
+
+<PageHeader Title="Progress" Mood="neutral">
+    <p>
+        <strong>We are working on Version 1 (V1 – Core).</strong>
+        ESIR is in development, so we only mark something as <strong>Done</strong> when it really works.
+    </p>
+</PageHeader>
+
+<section>
+    <h2>The three versions</h2>
+    <div class="versions">
+        <div class="version version--now">
+            <h3>V1 – Core <span class="here">we are here</span></h3>
+            <p>The first working ESIR: a robot you can touch, and a website where you pick how you feel. The website shows what the robot has confirmed.</p>
+        </div>
+        <div class="version">
+            <h3>V2 – Improve</h3>
+            <p>Finer gestures, eye colour and brightness, public pages and automatic deployment.</p>
+        </div>
+        <div class="version">
+            <h3>V3 – Optional</h3>
+            <p>A body that moves its head, and a microphone, only after privacy checks.</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2>Version 1 in detail</h2>
+    <p>
+        V1 is the version we must finish. It has to work from start to finish: you touch or tilt ESIR, or pick a feeling
+        on the website, and ESIR answers with a face and light, while the website shows what the robot has confirmed.
+    </p>
+
+    <h3>Our plan for V1</h3>
+    <p>In our pitch (18 November 2026) we planned to get V1 working in about two and a half weeks, in three steps.</p>
+    <ol class="plan">
+        @foreach (var step in _plan)
+        {
+            <li><strong>@step.Title</strong> @step.Text</li>
+        }
+    </ol>
+</section>
+
+<section>
+    <h2>What V1 must do</h2>
+    <p>
+        <strong>@_done of @_total parts done, @_inProgress in progress, @_planned planned.</strong>
+        A part is "in progress" when we have started building it.
+    </p>
+    <div class="meter" role="img" aria-label="@_done done, @_inProgress in progress, @_planned planned">
+        <span style="width: @(100 * _done / _total)%"></span>
+        <span style="width: @(100 * _inProgress / _total)%"></span>
+    </div>
+    <ul class="tasks">
+        @foreach (var part in _must)
+        {
+            <li>
+                <span class="part"><strong>@part.Title</strong><span class="detail">@part.Detail</span></span>
+                <span class="badge @BadgeClass(part.Status)">@part.Status</span>
+            </li>
+        }
+    </ul>
+</section>
+
+<section>
+    <h2>What V1 needs, layer by layer</h2>
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr><th scope="col">Layer</th><th scope="col">What V1 needs</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var row in _layers)
+                {
+                    <tr><th scope="row">@row.Name</th><td>@row.Needs</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section>
+    <h2>V1 is done when…</h2>
+    <p>We call V1 finished only when all of these are true. None of them is ticked yet.</p>
+    <ul class="checks">
+        @foreach (var item in _done_when)
+        {
+            <li>@item</li>
+        }
+    </ul>
+</section>
+
+<section>
+    <h2>What V1 does not include</h2>
+    <ul class="plain">
+        <li>Crisis monitoring, diagnosis or treatment claims. ESIR is a companion, not a therapist.</li>
+        <li>Storing conversations or emotion history.</li>
+        <li>Free navigation or advice from an AI without limits.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Later versions</h2>
+    <div class="two">
+        <div class="box box--now">
+            <h3>V2 – Improve</h3>
+            <ul>
+                @foreach (var item in _v2)
+                {
+                    <li>@item</li>
+                }
+            </ul>
+        </div>
+        <div class="box box--soon">
+            <h3>V3 – Optional</h3>
+            <ul>
+                @foreach (var item in _v3)
+                {
+                    <li>@item</li>
+                }
+            </ul>
+        </div>
+    </div>   
+</section>

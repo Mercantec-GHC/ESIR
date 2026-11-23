@@ -1,0 +1,78 @@
+/*
+  Global styles shared by the whole site. Colours come from the ESIR logo:
+  mint, dark ink, white and the pink heart. Page and component styles live in the matching *.razor.css file.
+*/
+
+:root {
+    --mint: #78D8CB;
+    --mint-light: #EAFBF7;
+    --mint-dark: #0E6B5F;
+    --ink: #24252B;
+    --pink: #F2A1B4;
+    --pink-light: #FDE6EC;
+    --white: #FFFFFF;
+    --muted: #4B5059;
+    --line: #D9EFEA;
+    --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html { overflow-x: clip; }
+
+body {
+    margin: 0;
+    font-family: "Nunito", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+    color: var(--ink);
+    line-height: 1.65;
+    background: var(--white);
+    overflow-x: clip;
+}
+
+h1, h2, h3 { line-height: 1.15; margin: 0 0 .5em; font-weight: 800; }
+h1 { font-size: clamp(2rem, 5vw, 3.1rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin-top: 1.8em; }
+h3 { font-size: 1.2rem; }
+p { margin: 0 0 1em; color: var(--muted); }
+a { color: var(--mint-dark); font-weight: 700; text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+
+.container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+/* A coloured band that runs the full width of the window, even inside the centred main area */
+.bleed { margin-inline: calc(50% - 50vw); padding-inline: calc(50vw - 50%); }
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-block; padding: 12px 24px; border-radius: 999px; border: 3px solid var(--ink);
+    background: var(--ink); color: var(--white); font: inherit; font-weight: 800; text-decoration: none; cursor: pointer;
+    transition: transform .15s;
+}
+.btn:hover { transform: translateY(-2px) rotate(-1deg); }
+.btn--light { background: var(--white); color: var(--ink); }
+
+/* ---------- Boxes and status words ---------- */
+.card { background: var(--white); border: 2px solid var(--ink); border-radius: var(--radius); padding: 20px; }
+.card p:last-child { margin-bottom: 0; }
+
+.notice { border-radius: 14px; background: var(--pink-light); padding: 12px 18px; color: var(--ink); font-weight: 600; }
+
+.badge { font-size: .85rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.badge::before { content: ""; display: inline-block; width: .65em; height: .65em; border-radius: 50%; background: #B8C2C0; margin-right: .45em; }
+.badge--inprogress::before { background: var(--pink); }
+.badge--done::before { background: var(--mint); }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Tables ---------- */
+.table-wrap { overflow-x: auto; margin-top: 12px; }
+.data-table { width: 100%; border-collapse: collapse; min-width: 540px; }
+.data-table th, .data-table td { text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--line); vertical-align: top; }
+.data-table thead th { background: var(--ink); color: var(--mint); border-bottom: 0; }
+.data-table thead th:first-child { border-radius: 14px 0 0 0; }
+.data-table thead th:last-child { border-radius: 0 14px 0 0; }
+.data-table tbody th { color: var(--ink); font-weight: 800; }
+.data-table td { color: var(--muted); }
+.data-table tbody tr:nth-child(even) { background: var(--mint-light); }

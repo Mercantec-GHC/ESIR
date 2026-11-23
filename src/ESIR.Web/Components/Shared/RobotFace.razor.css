@@ -1,0 +1,76 @@
+/* ESIR face, drawn with CSS. Everything scales with the font-size set by the Size parameter. */
+
+.face {
+    position: relative; width: 14em; height: 12em; background: #fff;
+    border-radius: 6em 6em 5em 5em; display: grid; place-items: center;
+    box-shadow: 0 1.2em 2.4em rgba(36, 37, 43, .15), inset 0 -.6em 0 rgba(120, 216, 203, .3);
+}
+
+/* The whole character floats gently */
+.esir { position: relative; display: inline-block; animation: bob 4s ease-in-out infinite; cursor: pointer; }
+.face.hop { animation: hop .6s ease-out; }
+
+/* Eyes and mouth look toward the mouse pointer (set by js/esir-face.js) */
+.face-features { position: absolute; inset: 0; transform: translate(calc(var(--look-x, 0) * .9em), calc(var(--look-y, 0) * .6em)); transition: transform .12s ease-out; }
+
+/* Speech bubble shown when the face is clicked */
+.bubble {
+    position: absolute; left: 50%; top: -.6em; transform: translate(-50%, -100%) scale(.8); opacity: 0; pointer-events: none;
+    white-space: nowrap; background: var(--white); border: 2px solid var(--ink); border-radius: 14px; padding: 4px 14px;
+    font-size: 15px; font-weight: 700; color: var(--ink); transition: opacity .15s, transform .15s;
+}
+.bubble.show { opacity: 1; transform: translate(-50%, -100%) scale(1); }
+
+.face::before, .face::after { content: ""; position: absolute; top: 4.2em; width: 1.4em; height: 3.6em; background: var(--mint); border-radius: 1em; }
+.face::before { left: -.7em; }
+.face::after { right: -.7em; }
+.screen { position: relative; width: 10.6em; height: 7.8em; background: var(--ink); border-radius: 3.6em; }
+.eye {
+    position: absolute; top: 2em; width: 1.6em; height: 2.2em; background: var(--mint); border-radius: 1em;
+    box-shadow: 0 0 .8em rgba(120, 216, 203, .7); animation: blink 5s infinite;
+}
+.eye.l { left: 2.6em; }
+.eye.r { right: 2.6em; }
+.mouth {
+    position: absolute; left: 50%; bottom: 1.4em; width: 2.2em; height: 1em; transform: translateX(-50%);
+    border-bottom: .35em solid var(--mint); border-radius: 0 0 2em 2em;
+}
+
+/* Hearts and sleepy "z" */
+.hearts, .zzz { position: absolute; inset: 0; pointer-events: none; }
+.hearts span { position: absolute; bottom: 70%; color: var(--pink); font-size: 1.8em; opacity: 0; animation: rise 3s ease-out infinite; }
+.hearts span:nth-child(1) { left: 78%; animation-delay: 0s; }
+.hearts span:nth-child(2) { left: 88%; animation-delay: 1s; font-size: 1.3em; }
+.hearts span:nth-child(3) { left: 66%; animation-delay: 2s; font-size: 1.1em; }
+.zzz span { position: absolute; left: 80%; bottom: 65%; font-weight: 800; color: var(--mint-dark); opacity: 0; animation: rise 3.5s ease-out infinite; }
+.zzz span:nth-child(2) { animation-delay: 1.5s; font-size: 1.4em; }
+
+/* Expressions */
+.face--happy .eye, .face--excited .eye { height: 1.1em; width: 2em; top: 2.4em; background: none; box-shadow: none; border-top: .4em solid var(--mint); border-radius: 1.6em 1.6em 0 0; animation: none; }
+.face--excited .mouth { width: 2.4em; height: 1.3em; background: var(--mint); border: 0; }
+.face--sad .eye { width: 1.3em; height: 1.3em; border-radius: 50%; top: 2.6em; }
+.face--sad .mouth { border-bottom: 0; border-top: .35em solid var(--mint); border-radius: 2em 2em 0 0; bottom: 1.2em; }
+.face--calm .eye, .face--sleepy .eye, .face--tired .eye { height: .9em; width: 2em; top: 2.6em; background: none; box-shadow: none; border-bottom: .4em solid var(--mint); border-radius: 0 0 1.6em 1.6em; animation: none; }
+.face--sleepy .mouth, .face--tired .mouth { width: 1em; height: 1em; border: .3em solid var(--mint); border-radius: 50%; }
+.face--surprised .eye { width: 2em; height: 2.7em; top: 1.7em; }
+.face--surprised .mouth { width: 1.4em; height: 1.4em; border: .35em solid var(--mint); border-radius: 50%; }
+.face--confused .eye.r { width: 1.1em; height: 1.1em; top: 2.6em; border-radius: 50%; }
+.face--confused .mouth { border-radius: 0; height: 0; transform: translateX(-50%) rotate(-10deg); }
+.face--angry .eye { height: 1.6em; }
+.face--angry .eye.l { clip-path: polygon(0 0, 100% 45%, 100% 100%, 0 100%); }
+.face--angry .eye.r { clip-path: polygon(0 45%, 100% 0, 100% 100%, 0 100%); }
+.face--angry .mouth { border-radius: 0; height: 0; }
+.face--angry { box-shadow: 0 1.2em 2.4em rgba(242, 161, 180, .45), inset 0 -.6em 0 rgba(242, 161, 180, .4); }
+.face--stressed .eye { width: 1.2em; height: 1.2em; border-radius: 50%; top: 2.4em; }
+.face--stressed .mouth { width: 2.4em; height: .5em; border: solid var(--mint); border-width: .3em 0; border-radius: 0; }
+.face--bored .eye { height: 1.4em; clip-path: inset(45% 0 0 0); animation: none; }
+.face--bored .mouth { border-radius: 0; height: 0; }
+
+@keyframes hop { 0% { transform: scale(1); } 25% { transform: scale(1.08, .92) rotate(-3deg); } 55% { transform: scale(.96, 1.06) translateY(-.6em) rotate(3deg); } 100% { transform: scale(1); } }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-.5em); } }
+@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+@keyframes rise { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(-5em); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .hearts span, .zzz span { opacity: 1; }
+}

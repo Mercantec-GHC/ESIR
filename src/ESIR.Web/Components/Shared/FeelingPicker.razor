@@ -1,0 +1,37 @@
+@implements IDisposable
+
+<div class="feelings">
+    <div class="feelings-face">
+        <RobotFace Mood="@CurrentMood" Size="16px" />
+        <div class="speech" role="status">@Message</div>
+        @if (snapshot.LastCommand is { } command)
+        {
+            <span class="status">@Label(command.Emotion): @StatusText(command.Status)</span>
+        }
+    </div>
+
+    <div class="feelings-pick">
+        <div class="emotions" role="group" aria-label="How do you feel?">
+            @foreach (var emotion in RobotStore.Emotions)
+            {
+                <button type="button" class="emotion" aria-pressed="@(emotion == CurrentMood ? "true" : "false")" @onclick="() => Send(emotion)">
+                    @Label(emotion)
+                </button>
+            }
+        </div>
+
+        <p class="robot-status" role="status">
+            <span class="dot @(snapshot.Connected ? "dot--on" : "")" aria-hidden="true"></span>
+            <strong>Robot: @(snapshot.Connected ? "online" : "offline")</strong>
+            @if (snapshot.LastSeen is { } seen)
+            {
+                <span> · last contact @seen.ToString("HH:mm:ss") UTC</span>
+            }
+        </p>
+
+        @if (!snapshot.Connected)
+        {
+            <p class="notice">The ESIR robot is offline, so your choice only shows here on the screen. It will wait for the robot for a short while.</p>
+        }
+    </div>
+</div>

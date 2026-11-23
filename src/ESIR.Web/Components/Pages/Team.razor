@@ -1,0 +1,45 @@
+@page "/team"
+
+<PageTitle>Our team – ESIR</PageTitle>
+
+<PageHeader Title="Our team" Mood="excited">
+    <p>
+		We are three students, that working together on the ESIR project. We want to help people to express their feelings, and to make a robot that can understand them. We are learning a lot about programming, electronics, and teamwork. We are proud of what we have done, and we hope you will enjoy using ESIR. We are international students from different backgrounds, but we are united in our goal to create something meaningful. We want to make a difference in the world, and we believe that ESIR is a step in that direction. We are thankful for the feedback from our users, which helps us improve ESIR and make it more user-friendly. We hope that you will join us on this journey, and that you will share your feelings with ESIR. Together, we can create a more empathetic and understanding world.
+	</p>
+</PageHeader>
+
+<section>
+    <h2>Who we are</h2>
+    <p>Each of us has our own main area in the project.</p>
+    <div class="people">
+        @foreach (var member in _members)
+        {
+            <article class="person">
+                <h3>@member.Name</h3>
+                <p class="role">@member.Role</p>
+                <p>@member.Work</p>
+            </article>
+        }
+    </div>
+</section>
+
+<section>
+    <h2>What we are building</h2>
+    <div class="facts">
+        <div><h3>The robot</h3><p>An Arduino with a round display, lights and touch pads, and the program that runs on it.</p></div>
+        <div><h3>The server</h3><p>A small API that passes feelings from the website to the robot and back.</p></div>
+        <div><h3>The website</h3><p>The pages you are looking at, with the feelings and the exercises on the Relax page.</p></div>
+        <div><h3>The body</h3><p>A 3D-printed shell for the robot.</p></div>
+    </div>
+</section>
+
+<section>
+    <h2>How we work</h2>
+    <ul class="how">
+        <li>Every task is an issue on GitHub, and we follow them on a project board.</li>
+        <li>We make one branch for each issue.</li>
+        <li>Changes go into the main version through a pull request that someone else reviews first.</li>
+        <li>We talk to each other in Microsoft Teams.</li>
+    </ul>
+    <p>You can follow our work on <a href="https://github.com/Mercantec-GHC/ESIR">GitHub</a>, or see the status on the <a href="progress">Progress page</a>.</p>
+</section>
