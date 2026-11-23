@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using ESIR.Web.Services;
 
@@ -12,6 +12,7 @@ public static class DeviceEndpoints
     public static IEndpointRouteBuilder MapDeviceApi(this IEndpointRouteBuilder app)
     {
         var device = app.MapGroup("/api/v1/devices/{deviceId}")
+            .WithTags("Device (Arduino)")
             .AddEndpointFilter(RequireDeviceKey);
 
         // The robot asks for its next command. Also counts as a heartbeat.

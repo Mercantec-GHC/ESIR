@@ -86,7 +86,7 @@ There is no database in the first version: commands and robot status live in mem
 Planned layout (folders are added as the project grows):
 
 ```
-src/Esir.Web/            Blazor Server app + robot API (Minimal API)
+src/ESIR.Web/            Blazor Server app + robot API (Minimal API)
 tests/Esir.Tests/        xUnit tests
 tools/RobotSimulator/    console app that behaves like the robot, for testing without hardware
 firmware/                PlatformIO project for the Arduino MKR WiFi 1010 + Opla
@@ -110,7 +110,7 @@ README.md
 ```bash
 git clone https://github.com/Mercantec-GHC/ESIR.git
 cd ESIR
-dotnet run --project src/Esir.Web
+dotnet run --project src/ESIR.Web
 ```
 
 Then open the URL shown in the terminal (for example `https://localhost:5001`).
