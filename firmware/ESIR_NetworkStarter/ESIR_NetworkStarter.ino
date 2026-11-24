@@ -1,8 +1,3 @@
-// ESIR network starter (Arduino MKR WiFi 1010)
-// Polls the ESIR website for the next command and reports each step back.
-// NOT yet tested on real hardware. Libraries (Library Manager): WiFiNINA, ArduinoHttpClient, ArduinoJson (v7).
-// Before uploading: copy arduino_secrets.example.h to arduino_secrets.h and fill it in.
-
 #include <WiFiNINA.h>
 #include <ArduinoHttpClient.h>
 #include <ArduinoJson.h>
@@ -13,17 +8,41 @@ HttpClient http(wifi, SECRET_SERVER_HOST, SECRET_SERVER_PORT);
 
 const String API_BASE = String("/api/v1/devices/") + SECRET_DEVICE_ID;
 
-String lastHandledId = "";   // dedup: never run the same command twice
+String lastHandledId = "";   
 unsigned long lastPoll = 0;
 const unsigned long POLL_EVERY_MS = 2000;
 
 void connectWifi() {
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.print("Connecting to Wi-Fi... ");
-    WiFi.begin(SECRET_WIFI_SSID, SECRET_WIFI_PASS);
-    delay(5000);
+  if (WiFi.status() == WL_NO_MODULE) {
+    Serial.println("Wi-Fi module not detected");
+    while (true) delay(1000);
   }
-  Serial.println("connected");
+
+  Serial.print("Wi-Fi firmware: ");
+  Serial.println(WiFi.firmwareVersion());
+
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print("Connecting to SSID: ");
+    Serial.println(SECRET_WIFI_SSID); // Do not print the password
+
+    int result = WiFi.begin(SECRET_WIFI_SSID, SECRET_WIFI_PASS);
+
+    Serial.print("WiFi.begin result: ");
+    Serial.println(result);
+    Serial.print("Current Wi-Fi status: ");
+    Serial.println(WiFi.status());
+
+    if (result == WL_NO_SSID_AVAIL) {
+      Serial.println("Network not found");
+    } else if (result == WL_CONNECT_FAILED) {
+      Serial.println("Connection failed; check password and network settings");
+    }
+
+    delay(10000);
+  }
+
+  Serial.print("Connected. IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void reportStatus(const String& id, const char* status) {
