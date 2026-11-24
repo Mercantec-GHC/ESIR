@@ -5,6 +5,8 @@ public partial class Progress
     private sealed record PlanStep(string Title, string Text);
     private sealed record Part(string Title, string Detail, string Status);
     private sealed record LayerRow(string Name, string Needs);
+    private sealed record Reaction(string Trigger, string What, string Sensor, string Mood);
+    private sealed record FeelingRow(string Feeling, string Robot, string Website);
 
     private readonly PlanStep[] _plan =
     [
@@ -28,7 +30,8 @@ public partial class Progress
 
     private readonly LayerRow[] _layers =
     [
-        new("Firmware and states", "Arduino C++ on the MKR WiFi 1010 with a loop that never waits. The states are idle, responding, breathing, paused and sleeping."),
+        new("Hardware", "An Arduino MKR WiFi 1010 on an Arduino Opla IoT Carrier, which brings the touch pads, a motion sensor, a round display and RGB lights."),
+        new("Firmware and states", "Arduino C++ with a loop that never waits, in four parts: input, behaviour, drawing the face and the network. The states are idle, responding, breathing, paused and sleeping."),
         new("Input and output", "Touch with debouncing (tap and hold). Tilt and shake from the motion sensor, with a cooldown, and an estimate of pick-up. A face and RGB lights."),
         new("Safety and power", "Output limits with a way to stop and disable. Steady USB power and a safe low-power mode. No lights or sounds after a restart."),
         new("Connection", "HTTP and JSON over Wi-Fi: the robot asks for commands and posts its status. Short timeouts, and command IDs so repeats are skipped."),
@@ -36,13 +39,33 @@ public partial class Progress
         new("Body and tools", "A fixed 3D-printed case designed in CAD. PlatformIO for the firmware and a shared task board for planning."),
     ];
 
-    private readonly string[] _done_when =
+    private readonly string[] _doneWhen =
     [
         "Every touch and motion input gives the agreed response.",
         "All six feelings give matching feedback on the robot and on the website.",
         "The website shows confirmed progress and the offline state.",
         "The offline controls work, and old commands are ignored.",
         "The case fits, the power is steady, and repeated tests need no reset.",
+    ];
+
+    private readonly Reaction[] _reactions =
+    [
+        new("Touch or hold", "Greets you, shows affection, or starts and pauses an activity.", "Sensor: the touch pads on the carrier", "happy"),
+        new("Pick it up", "Surprised eyes, then an attentive look.", "Sensor: the accelerometer", "surprised"),
+        new("Shake it gently", "A dizzy animation and an LED pattern.", "Sensor: the accelerometer, with a limit and a cooldown", "confused"),
+        new("Tilt left or right", "The eyes look in the direction of the tilt.", "Sensors: the accelerometer and the gyroscope", "neutral"),
+        new("Leave it alone", "Slow blinking, then sleepy eyes.", "Uses a timer for how long nothing happens", "sleepy"),
+        new("Stop", "Cancels the activity and returns to quiet rest.", "A dedicated touch action, or the website", "calm"),
+    ];
+
+    private readonly FeelingRow[] _feelings =
+    [
+        new("Happy or excited", "Smiling eyes and a short celebration", "A cheering message and hearts"),
+        new("Sad or lonely", "Gentle eyes, a heart and a steady light", "A reassuring message and hearts"),
+        new("Stressed or worried", "A breathing cue with slowly pulsing lights", "A guided breathing animation"),
+        new("Angry or frustrated", "A calm face and a slow light pattern", "Acknowledges the feeling and offers a pause"),
+        new("Tired", "Sleepy eyes and a soft light", "Suggests a short break"),
+        new("Bored", "Curious eyes and playful lights", "Suggests a simple activity"),
     ];
 
     private readonly string[] _v2 =

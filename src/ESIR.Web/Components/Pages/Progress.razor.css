@@ -1,4 +1,4 @@
-/* Progress page */
+/* Progress page (the more technical page) */
 
 .versions { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
 .version { border: 3px solid var(--line); border-radius: 24px; padding: 16px 20px; }
@@ -26,8 +26,19 @@
 .checks li { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; color: var(--ink); }
 .checks li::before { content: ""; flex: none; width: 1.2em; height: 1.2em; margin-top: .2em; border: 3px solid var(--ink); border-radius: 6px; background: var(--white); }
 
+.reactions { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-top: 16px; }
+.reaction { border: 3px solid var(--ink); border-radius: 24px; padding: 18px 20px; background: var(--white); }
+.reaction .esir { margin-bottom: 8px; }
+.reaction h3 { margin-bottom: .3em; }
+.reaction p { margin: 0 0 .4em; }
+.reaction .sensor { font-size: .85rem; color: var(--mint-dark); font-weight: 700; margin: 0; }
+
 .plain { max-width: 46em; padding-left: 1.2em; }
-.plain li { margin-bottom: .5em; color: var(--muted); }
+.plain li { margin-bottom: .6em; color: var(--muted); }
+.plain strong { color: var(--ink); }
+
+.flow { max-width: 46em; padding-left: 1.4em; }
+.flow li { margin-bottom: .6em; color: var(--muted); }
 
 .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
 .box { border: 3px solid var(--ink); border-radius: 28px; padding: 8px 24px 16px; }
@@ -36,3 +47,7 @@
 .box ul { margin: 0; padding-left: 1.2em; }
 .box li { margin-bottom: .5em; color: var(--ink); }
 .after { margin-top: 16px; max-width: 46em; }
+
+.concepts { margin: 24px 0 0; }
+.concepts img { width: 100%; max-width: 820px; height: auto; border-radius: 28px; border: 3px solid var(--ink); }
+.concepts figcaption { color: var(--muted); font-size: .9rem; margin-top: 8px; max-width: 46em; }

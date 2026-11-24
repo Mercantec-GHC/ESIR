@@ -6,6 +6,7 @@
     <p>
         <strong>We are working on Version 1 (V1 – Core).</strong>
         ESIR is in development, so we only mark something as <strong>Done</strong> when it really works.
+        This page is more technical: it shows how ESIR is built and how far we have come.
     </p>
 </PageHeader>
 
@@ -86,7 +87,7 @@
     <h2>V1 is done when…</h2>
     <p>We call V1 finished only when all of these are true. None of them is ticked yet.</p>
     <ul class="checks">
-        @foreach (var item in _done_when)
+        @foreach (var item in _doneWhen)
         {
             <li>@item</li>
         }
@@ -100,6 +101,94 @@
         <li>Storing conversations or emotion history.</li>
         <li>Free navigation or advice from an AI without limits.</li>
     </ul>
+</section>
+
+<section>
+    <h2>How the robot reacts</h2>
+    <p>ESIR has touch pads and a motion sensor. This is what each action should do. We have not tuned any of it on the real robot yet.</p>
+    <div class="reactions">
+        @foreach (var r in _reactions)
+        {
+            <article class="reaction">
+                <RobotFace Mood="@r.Mood" Size="4.5px" />
+                <h3>@r.Trigger</h3>
+                <p>@r.What</p>
+                <p class="sensor">@r.Sensor</p>
+            </article>
+        }
+    </div>
+</section>
+
+<section>
+    <h2>Six feelings, two answers</h2>
+    <p>
+        When you pick a feeling, ESIR answers twice: on the robot and on the website. Today the website shows ESIR's face
+        and a kind message. The rest of the website answers, and everything on the robot, are still being built.
+    </p>
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr><th scope="col">Feeling</th><th scope="col">On the robot (planned)</th><th scope="col">On the website</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var row in _feelings)
+                {
+                    <tr><th scope="row">@row.Feeling</th><td>@row.Robot</td><td>@row.Website</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section>
+    <h2>The body</h2>
+    <p>The board sits inside a 3D-printed shell that we design in CAD. Both ideas below are concepts, and the fit still has to be checked.</p>
+    <div class="two">
+        <div class="box box--now">
+            <h3>Version 1: a fixed disc</h3>
+            <ul>
+                <li>A flat disc shell, with the board between two halves.</li>
+                <li>A window for the display.</li>
+                <li>Open touch pads, so you can reach them.</li>
+                <li>USB access and a removable back.</li>
+            </ul>
+        </div>
+        <div class="box box--soon">
+            <h3>Version 3 idea: a body that moves</h3>
+            <ul>
+                <li>A head and arms moved by small motors (servos), on the same board mount.</li>
+                <li>We would start with one head movement only.</li>
+                <li>This only happens if there is time.</li>
+            </ul>
+        </div>
+    </div>
+    <figure class="concepts">
+        <img src="images/esir-concepts.jpg" alt="Four ESIR enclosure concepts: a mint cat, a classic blue robot, a peach box and a lilac pebble." loading="lazy" />
+        <figcaption>Four shell concepts to choose from: a mint cat, a classic robot, a peach box and a lilac pebble. Board size, touch openings and fit still need to be checked.</figcaption>
+    </figure>
+</section>
+
+<section>
+    <h2>Safe by design</h2>
+    <ul class="plain">
+        <li><strong>Stop always wins.</strong> It cancels whatever ESIR is doing and returns it to quiet rest. You can stop it with a touch pad or from the website.</li>
+        <li><strong>Limits on lights and sound,</strong> with a way to switch them off.</li>
+        <li><strong>No surprises after a restart.</strong> ESIR starts with no lights or sounds on.</li>
+        <li><strong>Old commands are ignored.</strong> Every command has an ID, so a repeated or outdated command is skipped.</li>
+        <li><strong>It should keep working without Wi-Fi,</strong> and the website only shows what the robot has confirmed.</li>
+        <li><strong>No recordings and no personal data.</strong> You can't talk to ESIR directly yet. A microphone is only a later idea, and only after privacy checks.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>How the robot and the website talk</h2>
+    <ol class="flow">
+        <li>You pick a feeling on the website. The website puts a command for the robot in a waiting line on the server.</li>
+        <li>About once a second the robot asks the server: "Is there something for me?" The server never calls the robot.</li>
+        <li>The robot shows the matching reaction and tells the server each step, with the command ID and the status: received, running, completed.</li>
+        <li>The website shows only what the robot has confirmed. If the robot is offline, the command waits for a short while and then expires.</li>
+    </ol>
+    <p>There is no database in the first version. Commands and robot status live in memory, and nothing personal is stored.</p>
 </section>
 
 <section>
@@ -123,5 +212,6 @@
                 }
             </ul>
         </div>
-    </div>   
+    </div>
+    <p class="after">We also built something that was not in the plan: the Relax page, with breathing rhythms, a grounding exercise and a body release exercise.</p>
 </section>

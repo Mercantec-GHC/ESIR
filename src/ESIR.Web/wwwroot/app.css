@@ -36,6 +36,8 @@ h3 { font-size: 1.2rem; }
 p { margin: 0 0 1em; color: var(--muted); }
 a { color: var(--mint-dark); font-weight: 700; text-underline-offset: 3px; }
 :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+/* Blazor moves focus to the page title after each page change. The title is not a control, so it needs no focus ring. */
+h1[tabindex="-1"]:focus, h1[tabindex="-1"]:focus-visible { outline: none; }
 
 .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
 
