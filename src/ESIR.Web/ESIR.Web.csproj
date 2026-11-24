@@ -6,10 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <!-- Docker restores packages before copying the Razor components. -->
     <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
+    <UserSecretsId>02dd507f-17b0-479a-8341-211daa8651a0</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.3.1" />
   </ItemGroup>
 
