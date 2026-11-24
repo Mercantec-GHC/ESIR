@@ -1,32 +1,31 @@
-.page {
-    font-family: system-ui, sans-serif;
-    color: #24252B;
-}
+/* Site header, navigation, main area and footer */
 
-.site-header {
-    border-bottom: 1px solid #E0D3C1;
-    padding: 12px 24px;
-}
+.site-header { background: var(--white); border-bottom: 3px solid var(--mint); }
+.site-header .container { display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
+.brand img { display: block; height: 52px; width: auto; }
 
-nav {
-    display: flex;
-    gap: 16px;
-    max-width: 720px;
-    margin: 0 auto;
-}
+/* Two groups of links, each with a small heading: pages for visitors, and the more technical pages */
+.site-nav { display: flex; align-items: stretch; gap: 8px 24px; flex-wrap: wrap; }
+.nav-group { display: flex; flex-direction: column; gap: 2px; }
+.nav-group--behind { padding-left: 24px; border-left: 2px solid var(--line); }
+.nav-label { padding-left: 14px; font-size: .72rem; font-weight: 700; color: var(--muted); }
+.nav-links { display: flex; gap: 4px; }
 
-nav ::deep a {
-    color: #2C6554;
-    text-decoration: none;
-}
+.nav-links ::deep a { padding: 6px 14px; border-radius: 999px; color: var(--ink); font-weight: 700; text-decoration: none; }
+.nav-links ::deep a:hover { background: var(--mint-light); }
+.nav-links ::deep a.active { background: var(--ink); color: var(--mint); }
 
-nav ::deep a.active {
-    font-weight: 700;
-    text-decoration: underline;
-}
+main.container { padding-top: 40px; padding-bottom: 56px; min-height: 60vh; }
 
-main {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 24px;
+.site-footer { background: var(--ink); color: var(--white); padding: 14px 0; font-size: .85rem; }
+.site-footer .container { display: flex; justify-content: space-between; gap: 4px 16px; flex-wrap: wrap; }
+.site-footer p { margin: 0; color: #C9D2D0; }
+.site-footer strong { color: var(--mint); }
+
+@media (max-width: 720px) {
+    .brand img { height: 44px; }
+    .site-nav { gap: 6px 16px; }
+    .nav-group--behind { padding-left: 16px; }
+    .nav-label { padding-left: 10px; }
+    .nav-links ::deep a { padding: 5px 10px; font-size: .95rem; }
 }

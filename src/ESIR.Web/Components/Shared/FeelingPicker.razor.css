@@ -1,0 +1,17 @@
+/* Feeling picker and robot status */
+
+.feelings { display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+.feelings-face { flex: 1 1 300px; display: flex; flex-direction: column; align-items: center; gap: 16px; background: var(--mint-light); border: 3px solid var(--ink); border-radius: 28px; padding: 28px 20px; }
+.speech { background: var(--white); border: 2px solid var(--ink); border-radius: 18px; padding: 8px 20px; font-size: 1.1rem; font-weight: 800; text-align: center; min-height: 3em; display: flex; align-items: center; }
+.feelings-pick { flex: 1 1 360px; }
+
+.emotions { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.emotion { padding: 14px 8px; border: 3px solid var(--ink); border-radius: 18px; background: var(--white); color: var(--ink); font: inherit; font-weight: 800; cursor: pointer; }
+.emotion:hover { background: var(--mint); }
+.emotion[aria-pressed="true"] { background: var(--ink); color: var(--white); }
+
+.status { font-size: .9rem; color: var(--muted); }
+
+.robot-status { margin: 0 0 12px; }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; background: #B8C2C0; }
+.dot--on { background: #2DB36F; }

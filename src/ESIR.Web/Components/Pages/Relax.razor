@@ -1,0 +1,42 @@
+@page "/relax"
+@rendermode InteractiveServer
+
+<PageTitle>Relax – ESIR</PageTitle>
+
+    <p>
+        Tell ESIR how you feel, or try one of the exercises below when things feel too fast. They take a few minutes
+        and nothing you do here is saved. You don't need to do them all. Pick what feels right.
+    </p>
+
+<section>
+    <h2>How do you feel?</h2>
+    <p>Pick a feeling and ESIR will answer.</p>
+    <FeelingPicker />
+</section>
+
+<section>
+    <h2>Breathe slowly</h2>
+    <p>Follow the circle. When it grows, breathe in. When it shrinks, breathe out. Slow breaths can help your body calm down.</p>
+    <BreathingExercise />
+</section>
+
+<section>
+    <h2>Two quick exercises</h2>
+    <div class="pair">
+        <StepExercise Title="Look around: 5-4-3-2-1"
+                      Intro="A way to come back to the here and now, using your five senses."
+                      Steps="_grounding" />
+        <StepExercise Title="Let go of tension"
+                      Intro="Tighten, then soften, one part of your body at a time."
+                      Steps="_release" />
+    </div>
+</section>
+
+<section class="care">
+    <h2>Good to know</h2>
+    <ul>
+        <li>These exercises are for everyday stress and for slowing down. They are not medical treatment.</li>
+        <li>If breathing exercises make you dizzy, stop and breathe normally.</li>
+        <li>If you are in danger or feel very unwell, contact your local emergency number or someone you trust.</li>
+    </ul>
+</section>

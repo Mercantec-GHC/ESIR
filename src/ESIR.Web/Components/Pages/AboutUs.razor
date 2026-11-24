@@ -1,7 +1,75 @@
-@page "/about-us"
+@page "/"
 
-<PageTitle>About us – ESIR</PageTitle>
+<PageTitle>ESIR – Your little companion</PageTitle>
 
-<h1>About us</h1>
-<p>ESIR Robotics is a student project at Mercantec by Patricia, Victoria and Yuliia.</p>
-<p>ESIR is a companion, not a therapist or an emergency service. It stores no conversations and no personal data.</p>
+<section class="hero bleed">
+    <div class="container hero-inner">
+        <div class="hero-text">
+            <p class="hello">Hi, I'm ESIR!</p>
+            <h1>Your little companion, always by your side.</h1>
+            <p class="lead">
+                I'm a small desk robot with a friendly face. Tell me how you feel and I'll answer with
+                a kind word and a smile. If everything feels too fast, we can breathe slowly together.
+            </p>
+            <p class="actions">
+                <a class="btn" href="relax">Tell me how you feel</a>
+            </p>
+        </div>
+        <div class="hero-face">
+            <RobotFace Mood="happy" Size="21px" />
+            <p class="hint">Psst, click my face!</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2>What ESIR is</h2>
+    <p>
+        ESIR stands for <strong>Emotional Supportive Interactive Robot</strong>. It is a small, friendly robot for your desk.
+        It is for people who would like some company, someone to be there with a feeling, or a little help to slow down
+        when things feel hard.
+    </p>
+    <p>ESIR is for adults and young people. It is not made for children.</p>
+    <p class="stage">ESIR is a student project. The website works today, and the robot itself is still being built.</p>
+</section>
+
+<section>
+    <h2>How it works</h2>
+    <ol class="steps">
+        @foreach (var step in _steps)
+        {
+            <li class="step">
+                <RobotFace Mood="@step.Mood" Size="5px" />
+                <h3>@step.Title</h3>
+                <p>@step.Text</p>
+            </li>
+        }
+    </ol>
+</section>
+
+<section>
+    <h2>How to use this website</h2>
+    <ol class="howto">
+        <li>Open the <strong>Relax</strong> page in the menu at the top.</li>
+        <li>Under <strong>How do you feel?</strong>, press the feeling that fits right now.</li>
+        <li>Read ESIR's answer next to its face.</li>
+        <li>If you want to slow down, choose a breathing rhythm, press <strong>Start</strong> and follow the circle. Press <strong>Stop</strong> whenever you like.</li>
+        <li>You can also try the <strong>5-4-3-2-1</strong> exercise or the exercise for letting go of tension.</li>
+    </ol>
+    <p>
+        Under the feelings you see a line that says whether the ESIR robot is online. If it says offline, don't worry.
+        The website works on its own.
+    </p>
+</section>
+
+<section>
+    <h2>Good to know</h2>
+    <ul class="plain">
+        <li>ESIR is a companion, not a therapist, not a medical device and not an emergency service. If you are in danger or feel very unwell, contact your local emergency number or someone you trust.</li>
+        <li>ESIR does not record you and does not save personal data or a history of your feelings.</li>
+        <li>You can't talk to ESIR yet. You pick a feeling, and later you will also be able to touch the robot.</li>
+    </ul>
+    <p class="more">
+        Curious how ESIR is built, or who makes it? Read the <a href="progress">Progress page</a> and the <a href="team">Team page</a>.
+    </p>
+</section>

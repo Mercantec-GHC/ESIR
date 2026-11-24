@@ -1,0 +1,5 @@
+/* Relax page */
+
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.care ul { padding-left: 1.2em; max-width: 46em; }
+.care li { margin-bottom: .5em; color: var(--muted); }
