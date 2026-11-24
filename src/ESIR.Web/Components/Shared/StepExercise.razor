@@ -1,0 +1,30 @@
+<div class="steps card">
+    <h3>@Title</h3>
+    @if (!string.IsNullOrEmpty(Intro))
+    {
+        <p>@Intro</p>
+    }
+
+    @if (index < 0)
+    {
+        <button type="button" class="btn" @onclick="Begin">Start</button>
+    }
+    else if (index < Steps.Count)
+    {
+        var step = Steps[index];
+        <div class="step-body" role="status" aria-live="polite">
+            <span class="count">Step @(index + 1) of @Steps.Count</span>
+            <strong class="step-title">@step.Title</strong>
+            <p>@step.Text</p>
+        </div>
+        <div class="buttons">
+            <button type="button" class="btn btn--light" disabled="@(index == 0)" @onclick="Back">Back</button>
+            <button type="button" class="btn" @onclick="Next">@(index == Steps.Count - 1 ? "Finish" : "Next")</button>
+        </div>
+    }
+    else
+    {
+        <p role="status"><strong>Well done.</strong> Take a moment to notice how you feel now.</p>
+        <button type="button" class="btn btn--light" @onclick="Restart">Do it again</button>
+    }
+</div>

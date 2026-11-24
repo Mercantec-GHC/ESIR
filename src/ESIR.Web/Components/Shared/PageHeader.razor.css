@@ -1,0 +1,5 @@
+/* Page title with a small ESIR beside it */
+
+.page-head { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+.page-head-text { flex: 1 1 320px; }
+.page-head-text ::deep p:last-child { margin-bottom: 0; }

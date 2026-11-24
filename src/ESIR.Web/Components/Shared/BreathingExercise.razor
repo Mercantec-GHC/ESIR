@@ -1,0 +1,49 @@
+@implements IDisposable
+
+<div class="breath card">
+    <div class="group" role="group" aria-label="Pick a rhythm">
+        @foreach (var p in Patterns)
+        {
+            var current = p;
+            <button type="button" class="chip" aria-pressed="@(current == pattern ? "true" : "false")" disabled="@running" @onclick="() => Choose(current)">
+                <strong>@current.Name</strong>
+                <small>@current.Summary</small>
+            </button>
+        }
+    </div>
+
+    <div class="group group--small" role="group" aria-label="Number of rounds">
+        <span class="label">Rounds</span>
+        @foreach (var n in RoundChoices)
+        {
+            var count = n;
+            <button type="button" class="chip chip--small" aria-pressed="@(count == totalRounds ? "true" : "false")" disabled="@running" @onclick="() => ChooseRounds(count)">@count</button>
+        }
+    </div>
+
+    <div class="breath-stage">
+        <div class="breath-ring" style="transform: scale(@Scale); transition: transform @(seconds)s ease-in-out"></div>
+        <RobotFace Mood="@faceMood" Size="10px" />
+    </div>
+
+    <div class="breath-text" role="status" aria-live="polite">
+        <strong>@instruction</strong>
+        @if (running && remaining > 0)
+        {
+            <span class="breath-count">@remaining</span>
+        }
+        @if (running)
+        {
+            <span>Round @round of @totalRounds</span>
+        }
+    </div>
+
+    @if (running)
+    {
+        <button type="button" class="btn btn--light" @onclick="Stop">Stop</button>
+    }
+    else
+    {
+        <button type="button" class="btn" @onclick="Start">@(finished ? "Do it again" : "Start")</button>
+    }
+</div>

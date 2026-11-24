@@ -2,15 +2,37 @@
 
 <div class="page">
     <header class="site-header">
-        <nav>
-            <NavLink href="" Match="NavLinkMatch.All">Home</NavLink>
-            <NavLink href="feelings">Feelings</NavLink>
-            <NavLink href="my-esir">My ESIR</NavLink>
-            <NavLink href="about-us">About us</NavLink>
-        </nav>
+        <div class="container">
+            <a class="brand" href="" aria-label="ESIR Robotics, start page">
+                <img src="images/esir-logo.png" alt="ESIR Robotics" />
+            </a>
+            <nav class="site-nav" aria-label="Main">
+                <div class="nav-group" role="group" aria-labelledby="nav-visitors">
+                    <span class="nav-label" id="nav-visitors">For you</span>
+                    <div class="nav-links">
+                        <NavLink href="" Match="NavLinkMatch.All">About</NavLink>
+                        <NavLink href="relax">Relax</NavLink>
+                    </div>
+                </div>
+                <div class="nav-group nav-group--behind" role="group" aria-labelledby="nav-behind">
+                    <span class="nav-label" id="nav-behind">Technical</span>
+                    <div class="nav-links">
+                        <NavLink href="team">Team</NavLink>
+                        <NavLink href="progress">Progress</NavLink>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </header>
 
-    <main>
+    <main class="container">
         @Body
     </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p><strong>ESIR Robotics</strong> – your little companion, always by your side.</p>
+            <p>Student project, 2026.</p>
+        </div>
+    </footer>
 </div>
