@@ -14,8 +14,8 @@ unsigned long reactionEndsAt = 0;
 
 // Breathing
 unsigned long breathStartedAt = 0;
-unsigned long pausedAt = 0;
 int lastPhase = -1;               // 0 = breathe in, 1 = breathe out
+int lastNumber = -1;              // for countdown
 unsigned long lastLedUpdate = 0;
 
 // Blinking
@@ -61,37 +61,66 @@ void startBreathing() {
 	mode = Mode::Breathing;
 	breathStartedAt = millis();
 	lastPhase = -1;
-	drawFace(Face::Calm);
-}
-
-void togglePause() {
-	if (mode == Mode::Breathing) {
-		mode = Mode::Paused;
-		pausedAt = millis();
-		drawCaption("Paused");
-	} else if (mode == Mode::Paused) {
-		breathStartedAt += millis() - pausedAt;   // continue where we stopped
-		mode = Mode::Breathing;
-		lastPhase = -1;
-	}
+	lastNumber = -1;
+	lightsOff();
 }
 
 void updateBreathing() {
-	const unsigned long cycle = BREATHE_IN_MS + BREATHE_OUT_MS;
+	const unsigned long countdownMs = COUNTDOWN_STEPS * COUNTDOWN_STEP_MS;
+	const unsigned long cycleMs = BREATHE_IN_MS + BREATHE_HOLD_MS + BREATHE_OUT_MS + BREATHE_HOLD_MS;
 	unsigned long elapsed = millis() - breathStartedAt;
-	if (elapsed >= cycle * BREATHE_CYCLES) { goIdle(); return; }
 
-	unsigned long t = elapsed % cycle;
-	int phase = t < BREATHE_IN_MS ? 0 : 1;
-	if (phase != lastPhase) {
-		lastPhase = phase;
-		drawCaption(phase == 0 ? "Breathe in" : "Breathe out");
+	// Part 1: countdown 3, 2, 1
+	if (elapsed < countdownMs) {
+		int number = COUNTDOWN_STEPS - int(elapsed / COUNTDOWN_STEP_MS);
+		if (number != lastNumber) {
+			lastNumber = number;
+			drawCountdown(number);
+		}
+		return;
 	}
-	if (millis() - lastLedUpdate >= 40) {         // about 25 light updates per second
+
+	// Part 2: breathing cycles
+	unsigned long sinceStart = elapsed - countdownMs;
+	if (sinceStart >= cycleMs * BREATHE_CYCLES) 
+	{ 
+		react(Face::Happy, 3000, "Well done!");
+		return; 
+	}
+
+	unsigned long t = sinceStart % cycleMs;               // time inside this cycle
+	int phase;                                            // 0 = inhale, 1 = hold, 2 = exhale
+	float progress;                                       // 0.0 -> 1.0 inside the phase
+	if (t < BREATHE_IN_MS) {
+		phase = 0;
+		progress = float(t) / BREATHE_IN_MS;
+	} else if (t < BREATHE_IN_MS + BREATHE_HOLD_MS) {
+		phase = 1;
+		progress = float(t - BREATHE_IN_MS) / BREATHE_HOLD_MS;
+	} else {
+		phase = 2;
+		progress = float(t - BREATHE_IN_MS - BREATHE_HOLD_MS) / BREATHE_OUT_MS;
+	}
+
+	if (phase != lastPhase) {
+		if (lastPhase == -1) drawBreathingFace();         // first time: replace the countdown
+		lastPhase = phase;
+		const char* names[] = { "Inhale", "", "Exhale", "" };
+		drawCaption(names[phase]);
+	}
+
+	if (millis() - lastLedUpdate >= 40) {                 // about 25 updates per second
 		lastLedUpdate = millis();
-		float level = phase == 0 ? float(t) / BREATHE_IN_MS
-		                         : 1.0f - float(t - BREATHE_IN_MS) / BREATHE_OUT_MS;
-		lightsBreath(level);
+		if (phase == 0) {
+			lightsBreathBar(1.0f - progress, true);       // teal, going off one by one
+			drawBreathMouth(progress);                    // growing
+		} else if (phase == 1) {
+			lightsBreathBar(0.0f, true);                  // all off
+			drawBreathMouth(1.0f);                        // stays full
+		} else {
+			lightsBreathBar(1.0f - progress, false);      // blue, going off one by one
+			drawBreathMouth(1.0f - progress);             // shrinking
+		}
 	}
 }
 
@@ -99,6 +128,9 @@ void handleTouch(const TouchEvent& e) {
 	if (e.kind == TouchKind::None) return;
 	Serial.print(e.kind == TouchKind::Hold ? "Hold pad " : "Tap pad ");
 	Serial.println(e.pad);
+
+	if (e.pad == 4) { goIdle(); return; }      // Stop always wins
+	if (mode == Mode::Breathing) return;       // during breathing, ignore every other pad
 
 	bool calmMoment = (mode == Mode::Idle || mode == Mode::Reaction);
 
@@ -111,14 +143,8 @@ void handleTouch(const TouchEvent& e) {
 		case 1:   // Breathe
 			if (e.kind == TouchKind::Tap) startBreathing();
 			break;
-		case 2:   // Pause / Resume
-			if (e.kind == TouchKind::Tap) togglePause();
-			break;
-		case 3:   // Cheer me up
+		case 2:   // Cheer me up
 			if (e.kind == TouchKind::Tap && calmMoment) react(Face::Love, CHEER_MS, "You got this!");
-			break;
-		case 4:   // Stop: always wins
-			goIdle();
 			break;
 	}
 }
@@ -151,7 +177,7 @@ void loop() {
 	handleTouch(touchPoll());
 
 	if (mode == Mode::Reaction && long(millis() - reactionEndsAt) >= 0) goIdle();
-	// if (mode == Mode::Breathing) updateBreathing();   
+	if (mode == Mode::Breathing) updateBreathing();   
 	updateBlink();
 
 	// handleEmotion(netPoll());                          

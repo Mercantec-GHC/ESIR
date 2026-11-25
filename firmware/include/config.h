@@ -18,10 +18,13 @@ constexpr unsigned long BLINK_MIN_MS = 2500;   // shortest wait between blinks
 constexpr unsigned long BLINK_MAX_MS = 6000;   // longest wait between blinks
 constexpr unsigned long BLINK_MS     = 150;    // how long the eyes stay closed
 
-// Breathing: 6 cycles of 4 s in, 6 s out = 60 s
+// Breathing: 3-2-1 countdown, then 5 cycles of 4 in, 6 out
+constexpr unsigned long COUNTDOWN_STEP_MS = 1000;
+constexpr int COUNTDOWN_STEPS = 3;
 constexpr unsigned long BREATHE_IN_MS  = 4000;
+constexpr unsigned long BREATHE_HOLD_MS = 1500;   // pause after the inhale
 constexpr unsigned long BREATHE_OUT_MS = 6000;
-constexpr int BREATHE_CYCLES = 6;
+constexpr int BREATHE_CYCLES = 2; // set 2 for testing, change to 5 for normal use
 
 // LEDs
 constexpr uint8_t LED_BRIGHTNESS = 40;         // 0-255; keep it soft for the eyes

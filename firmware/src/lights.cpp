@@ -46,7 +46,11 @@ void lightsFor(Face face) {
 	}
 }
 
-void lightsBreath(float level) {
-	float l = 0.1f + 0.9f * level;   // never completely dark
-	fillAll(colour(0, uint8_t(200 * l), uint8_t(160 * l)));
+void lightsBreathBar(float remaining, bool inhale) {
+	uint32_t on = inhale ? colour(0, 200, 160)      // teal
+	                     : colour(60, 100, 255);    // soft blue
+	int count = (int)ceilf(remaining * LED_COUNT);  // 1.0 -> 5 LEDs, 0.5 -> 3, 0.0 -> 0
+	for (int i = 0; i < LED_COUNT; i++)
+		carrier.leds.setPixelColor(i, i < count ? on : 0);
+	carrier.leds.show();
 }
