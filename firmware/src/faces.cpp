@@ -63,6 +63,16 @@ namespace {
 		d.fillCircle(CX - 70, 135, 10, PINK);
 		d.fillCircle(CX + 70, 135, 10, PINK);
 	}
+
+	void centredText(const char* text, int y) {   // white, size 2, centred on the display
+		d.setTextColor(WHITE);
+		d.setTextSize(2);                         // 12 px per character
+		d.setCursor(CX - int(strlen(text)) * 6, y);   // half the text width = 6 px per character
+		d.print(text);
+	}
+
+	int lastMouthR = -1;   // remembers the last size so we only redraw when it changes
+	GFXcanvas16 mouthCanvas(48, 48);   // off-screen 48x48 picture, about 4.6 KB of RAM
 }
 
 void drawFace(Face face) {
@@ -149,4 +159,31 @@ void drawNeutralEyes(bool open) {
 		d.fillRoundRect(LEFT_EYE_X - 16, EYE_Y - 4, 32, 8, 4, MINT);
 		d.fillRoundRect(RIGHT_EYE_X - 16, EYE_Y - 4, 32, 8, 4, MINT);
 	}
+}
+
+void drawBreathingFace() {
+	d.fillScreen(BG);
+	relaxedEye(LEFT_EYE_X);
+	relaxedEye(RIGHT_EYE_X);
+	lastMouthR = -1;                            // force the mouth to be drawn next time
+}
+
+void drawBreathMouth(float level) {
+	int r = 6 + int(level * 16);                // 6 ... 22 px
+	if (r == lastMouthR) return;                // same size: nothing to do
+	lastMouthR = r;
+
+	mouthCanvas.fillScreen(BG);                 // 1. draw in memory first...
+	mouthCanvas.fillCircle(24, 24, r, MINT);    //    (24, 24) = centre of the 48x48 canvas
+	d.drawRGBBitmap(CX - 24, MOUTH_Y - 24, mouthCanvas.getBuffer(), 48, 48);   // 2. ...then send it in one go
+}
+
+void drawCountdown(int number) {
+	d.fillScreen(BG);
+	d.setTextColor(MINT);
+	d.setTextSize(8);                           // 48 x 64 px per digit
+	d.setCursor(CX - 24, 88);
+	d.print(number);
+	centredText("Get ready", 165);              // line 1
+	centredText("to breathe in", 187);
 }
